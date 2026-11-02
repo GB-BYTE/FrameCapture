@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {createPlaybackMonitor} from '../app/export-health.mjs';
+test('long and slow exports continue as long as playback advances',()=>{let now=0;const monitor=createPlaybackMonitor({now:()=>now});for(let i=0;i<3600;i++){now+=2000;assert.equal(monitor.check(i*.5),false)}});
+test('genuine stalls are detected, including startup stalls',()=>{let now=0;const monitor=createPlaybackMonitor({now:()=>now});assert.equal(monitor.check(0),false);now=44999;assert.equal(monitor.check(0),false);now=45000;assert.equal(monitor.check(0),true)});
+test('progress resets the stall timer',()=>{let now=0;const monitor=createPlaybackMonitor({now:()=>now});monitor.check(0);now=44000;assert.equal(monitor.check(1),false);now=88000;assert.equal(monitor.check(1),false);now=89000;assert.equal(monitor.check(1),true)});

@@ -1,0 +1,3 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {RETENTION_MS,expiresAt,isExpired} from '../app/storage.mjs';
+test('video expires exactly twenty days after first save',()=>{const e={kind:'video',created:100,savedAt:1000};assert.equal(expiresAt(e),1000+RETENTION_MS);assert.equal(isExpired(e,1000+RETENTION_MS-1),false);assert.equal(isExpired(e,1000+RETENTION_MS),true);});
+test('legacy video uses creation date; screenshots are excluded',()=>{assert.equal(expiresAt({kind:'video',created:100}),100+RETENTION_MS);assert.equal(isExpired({kind:'image',created:0},RETENTION_MS*10),false);assert.equal(isExpired({kind:'video'},Date.now()),false);});

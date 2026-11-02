@@ -1,0 +1,14 @@
+node_modules/
+.env
+.env.*
+!.env.example
+*.log
+*.mp4
+*.webm
+*.mov
+*.zip
+.DS_Store
+Thumbs.db
+work/
+outputs/
+.vercel/
